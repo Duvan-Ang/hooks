@@ -104,7 +104,7 @@ function DashboardPage() {
       <main className="main-content">
         <div>
           <img src={logo} alt="Brilla Logo" className="main-logo" />
-          <h1 className="welcome-title">Welcome to Brilla System</h1>
+          <h1 className="welcome-title">Welcome to Duvan System</h1>
           <p className="welcome-text">
             Manage your clients, services, and more efficiently!
           </p>
@@ -127,7 +127,7 @@ function DashboardPage() {
       {/* FOOTER */}
       <footer className="footer mt-auto">
         <div className="container">
-          <small>© 2025 Brilla. All rights reserved.</small>
+          <small>© 2025 Duvan. All rights reserved.</small>
         </div>
       </footer>
     </>

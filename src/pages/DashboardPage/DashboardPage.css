@@ -1,40 +1,124 @@
-body {
-    background: linear-gradient(135deg, #812c94, #c13c3c);
-    min-height: 100vh;
+.dashboard-navbar {
+    background-color: #731d1d;
+    padding: 0.5rem 2rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    background-color: #8337d4;
+    color: #000;
+    text-decoration: none;
+}
+
+/* Cerrar sesión + foto */
+.logout-container .logout-link {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-family: 'Segoe UI', sans-serif;
-    padding: 1rem;
+    gap: 8px;
+    color: #fff;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-
-
-.form-card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 100%;
-    max-width: 500px;
+.logout-container .logout-link:hover {
+    background-color: #8337d4;
+    color: #000;
 }
 
-.form-control:focus {
-    box-shadow: none;
-    border-color: #cbff63;
+.logout-container .logout-link:hover .user-photo-nav {
+    border: 2px solid #000;
+    transform: scale(1.1);
 }
 
-.btn-primary {
-    background-color: #6cc173;
+/* Foto en navbar */
+.user-photo-nav {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    object-fit: cover;
+}
+
+/* DROPDOWN */
+.navbar-dark .dropdown-menu {
+    background-color: #dfdfdf;
     border: none;
 }
 
-.btn-primary:hover {
-    background-color: #00f00c;
-    color: black;
+.navbar-dark .dropdown-menu .dropdown-item {
+    color: #fff;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.btn-outline-secondary:hover {
-    color: white;
-    background-color: #63ff78;
+.navbar-dark .dropdown-menu .dropdown-item:hover {
+    background-color: #8337d4;
+    color: #000;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    background: linear-gradient(135deg, #381341, #3f1414);
+    min-height: calc(100vh - 130px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.main-content>div {
+    max-width: 600px;
+    width: 100%;
+}
+
+.main-logo {
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.welcome-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+}
+
+.welcome-text {
+    font-size: 1.2rem;
+    color: #f0f0f0;
+    text-align: center;
+}
+
+.user-info {
+    color: #000;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+.user-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-top: 15px;
+    border: 2px solid #000;
+}
+
+.footer {
+    background: #731d1d;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
 }

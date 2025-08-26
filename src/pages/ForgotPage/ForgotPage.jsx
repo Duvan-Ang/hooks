@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import './ForgotPage.css'
 import { useState } from 'react';
 import Swal from 'sweetalert2';

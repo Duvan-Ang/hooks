@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
