@@ -49,6 +49,11 @@ npm install firebase
 npm install react-firebase-hooks
 npm install -g firebase-tools
 ```
+**React**
+```bash
+npm install react-bootstrap
+npm install react-icons
+```
 
 ---
 
@@ -71,40 +76,54 @@ npm install -g firebase-tools
 ```plaintext
 /
 ├── public/
-│   ├── index.html                   # Plantilla HTML principal de la app
-│   ├── favicon.ico                  # Ícono de la 
-│   ├── logo192.png                  # Icono de React
-│   ├── logo512.png                  # Icono de React
-│   ├── manifest.json                # Describe los metodos de mi aplicacion
-│   ├── robots.txt                   # Indica los robots de busqueda
+│   ├── index.html                          # Plantilla HTML principal de la app
+│   ├── favicon.ico                         # Ícono de la 
+│   ├── logo192.png                         # Icono de React
+│   ├── logo512.png                         # Icono de React
+│   ├── manifest.json                       # Describe los metodos de mi aplicacion
+│   ├── robots.txt                          # Indica los robots de busqueda
 ├── src/
-│   ├── pages                        # Páginas completas (vistas o interfaces completas)
+│   ├── pages                               # Páginas completas (vistas o interfaces completas)
 │   │       ├──LoginPage
-│   │          ├── LoginPage.jsx     # Login de la pagina
-│   │          ├── LoginPage.css     # Estilos del login de la pagina
+│   │          ├── LoginPage.jsx            # Login de la pagina
+│   │          ├── LoginPage.css            # Estilos del login de la pagina
 │   │       ├──RegisterPage
-│   │          ├── RegisterPage.jsx  # Pagina de registro
-│   │          ├── RegisterPage.css  # Estilos de la pagina de registro
+│   │          ├── RegisterPage.jsx         # Pagina de registro
+│   │          ├── RegisterPage.css         # Estilos de la pagina de registro
 │   │       ├──ForgotPage
-│   │          ├── ForgotPage.jsx    # Pagina de recuperacion de contraseña
-│   │          ├── ForgotPage.css    # Estilos de la pagina de recuperacion de contraseña
+│   │          ├── ForgotPage.jsx           # Pagina de recuperacion de contraseña
+│   │          ├── ForgotPage.css           # Estilos de la pagina de recuperacion de contraseña
+│   │       ├──AuxiliaresPage
+│   │          ├── AuxiliaresPage.jsx       # Pagina auxiliar
+│   │          ├── AuxiliaresPage.css       # Estilos de la pagina auxiliar
+│   │       ├──DashboardPage
+│   │          ├── DashboardPage.jsx        # Pagina principal
+│   │          ├── DashboardPage.css        # Estilos de la pagina principal
+│   │       ├──ResetPasswordPage
+│   │          ├── ResetPasswordPage.jsx    # Pagina de reinicio de la contraseña
+│   │          ├── ResetPasswordPage.css    # Estilos de la pagina reinicio de la contraseña
+│   │       ├──components
+│   │          ├── NotFoundPage.jsx         # Aviso de que la pagina no fue encontrada
+│   │          ├── ProtectedRoute.jsx       # Proteccion para la ruta
+│   │          ├── Spinner.jsx              # Tiempo de carga de la pagina
 │   ├── playground/     
-│   │   ├── useState.jsx             # Practica del uso de useState
-│   │   ├── LoginPage.css            # Estilos globales de la pagina de login
-│   │   ├── HooksGral.jsx            # Ejercicio de practica de los hooks
-│   │   └── LoginPage.jsx            # Login de la pagina   
-│   ├── index.js                     # Punto de entrada principal
-│   ├── App.js                       # Componente raíz
-│   ├── App.css                      # Estilos globales de la app
-│   ├── index.css                    # Estilos globales del index
-│   ├── App.test.js                  # Testeo para la app
-│   ├── logo.svg                     # Contiene el logo de React en graficos vectoriales escalables
-│   ├── reportWebVitals.js           # Mide el rendimiento web de la pagina
-│   ├── setupTests.js                # Archivo de configuracion para pruebas del proyecto
-├── .gitignore                       # Es para que ignore la carpeta "node_modules" al subir al repositorio de GIT
-├── package.json                     # Configuración y dependencias del proyecto
-├── package-lock.json                # Bloqueo de versiones de dependencias
-└── README.md                        # Documentación del proyecto
+│   │   ├── useState.jsx                    # Practica del uso de useState
+│   │   ├── LoginPage.css                   # Estilos globales de la pagina de login
+│   │   ├── HooksGral.jsx                   # Ejercicio de practica de los hooks
+│   │   └── LoginPage.jsx                   # Login de la pagina   
+│   ├── index.js                            # Punto de entrada principal
+│   ├── App.js                              # Componente raíz
+│   ├── firebase.js                         # Conexion en la base de datos
+│   ├── App.css                             # Estilos globales de la app
+│   ├── index.css                           # Estilos globales del index
+│   ├── App.test.js                         # Testeo para la app
+│   ├── logo.svg                            # Contiene el logo de React en graficos vectoriales escalables
+│   ├── reportWebVitals.js                  # Mide el rendimiento web de la pagina
+│   ├── setupTests.js                       # Archivo de configuracion para pruebas del proyecto
+├── .gitignore                              # Es para que ignore la carpeta "node_modules" al subir al repositorio de GIT
+├── package.json                            # Configuración y dependencias del proyecto
+├── package-lock.json                       # Bloqueo de versiones de dependencias
+└── README.md                               # Documentación del proyecto
 
 ```
 ---
