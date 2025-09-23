@@ -55,9 +55,13 @@ function AuxiliaresPage() {
     };
 
     const handleEdit = (aux) => {
-        setSelectedAux(aux);
+        setSelectedAux({
+            ...aux,
+            edad: calcularEdad(aux.fechaNacimiento)
+        });
         setShowModal(true);
     };
+    
 
     const handleSaveChanges = async () => {
         try {
@@ -87,10 +91,34 @@ function AuxiliaresPage() {
 
     const handleModalChange = (e) => {
         const { name, value } = e.target;
-        setSelectedAux({
-            ...selectedAux,
-            [name]: value
+    
+        setSelectedAux((prev) => {
+            const updated = { ...prev, [name]: value };
+    
+            if (name === 'fechaNacimiento') {
+                updated.edad = calcularEdad(value);
+            }
+    
+            return updated;
         });
+    };
+    
+
+    const calcularEdad = (fechaNacimiento) => {
+        if (!fechaNacimiento) return '';
+    
+        const hoy = new Date();
+        const fechaNac = new Date(fechaNacimiento);
+    
+        let edad = hoy.getFullYear() - fechaNac.getFullYear();
+        const mes = hoy.getMonth() - fechaNac.getMonth();
+        const dia = hoy.getDate() - fechaNac.getDate();
+    
+        if (mes < 0 || (mes === 0 && dia < 0)) {
+            edad--;
+        }
+    
+        return edad;
     };
 
     // Foto de usuario (si está logueado)
@@ -141,7 +169,7 @@ function AuxiliaresPage() {
             <main className="main-content">
                 <Container className="mt-4">
                     <h2 className="page-title text-center mb-4">
-                        AUXILIARES DE SERVICIOS REGISTRADOS EN BRILLA
+                        AUXILIARES DE SERVICIOS REGISTRADOS
                     </h2>
                     <div className="table-container">
                         <Table striped bordered hover responsive className="tabla-auxiliares">
@@ -153,6 +181,7 @@ function AuxiliaresPage() {
                                     <th>Teléfono</th>
                                     <th>Email</th>
                                     <th>Fecha Nacimiento</th>
+                                    <th>Edad</th>
                                     <th>Sexo</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -167,6 +196,7 @@ function AuxiliaresPage() {
                                         <td>{aux.telefono}</td>
                                         <td>{aux.email}</td>
                                         <td>{aux.fechaNacimiento || '-'}</td>
+                                        <td>{aux.edad || '-'}</td>
                                         <td>{aux.sexo || '-'}</td>
                                         <td>{aux.estado || 'Pendiente'}</td>
                                         <td>
@@ -196,7 +226,7 @@ function AuxiliaresPage() {
 
             <footer className="footer mt-auto">
                 <Container className="text-center">
-                    <small>© 2025 Brilla. All rights reserved.</small>
+                    <small>© 2025 Duvan. All rights reserved.</small>
                 </Container>
             </footer>
 
@@ -261,6 +291,15 @@ function AuxiliaresPage() {
                                     value={selectedAux.fechaNacimiento || ''}
                                     onChange={handleModalChange}
                                 />
+                                <Form.Group className="mb-2">
+                                    <Form.Label>Edad</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="edad"
+                                        value={selectedAux.edad}
+                                        readOnly
+                                    />
+                                </Form.Group>
                             </Form.Group>
                             <Form.Group className="mb-2">
                                 <Form.Label>Sexo</Form.Label>

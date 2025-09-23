@@ -94,7 +94,7 @@ npm install react-icons
 │   │          ├── ForgotPage.jsx           # Pagina de recuperacion de contraseña
 │   │          ├── ForgotPage.css           # Estilos de la pagina de recuperacion de contraseña
 │   │       ├──AuxiliaresPage
-│   │          ├── AuxiliaresPage.jsx       # Pagina auxiliar
+│   │          ├── AuxiliaresPage.jsx       # Pagina de auxiliares
 │   │          ├── AuxiliaresPage.css       # Estilos de la pagina auxiliar
 │   │       ├──DashboardPage
 │   │          ├── DashboardPage.jsx        # Pagina principal

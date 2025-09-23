@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(135deg, #812c94, #c13c3c);
+    background: linear-gradient(135deg, #d1c406, #2a2a2a);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -10,31 +10,32 @@ body {
 
 
 
-.form-card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 100%;
-    max-width: 500px;
+.main-content {
+    background-color: #ffffff;
+    min-height: 80vh;
+    padding: 20px;
 }
 
-.form-control:focus {
-    box-shadow: none;
-    border-color: #cbff63;
+.page-title {
+    background: #00000000;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: bold;
 }
 
-.btn-primary {
-    background-color: #6cc173;
-    border: none;
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
 }
 
-.btn-primary:hover {
-    background-color: #00f00c;
-    color: black;
+.tabla-auxiliares {
+    background-color: #ffffff;
+    font-size: 0.9rem;
 }
 
-.btn-outline-secondary:hover {
-    color: white;
-    background-color: #63ff78;
+.footer {
+    background-color: #000000;
+    color: #fff;
+    padding: 10px 0;
 }

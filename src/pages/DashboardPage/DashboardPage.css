@@ -1,5 +1,5 @@
 .dashboard-navbar {
-    background-color: #731d1d;
+    background-color: #000000;
     padding: 0.5rem 2rem;
 }
 
@@ -67,7 +67,7 @@
 
 /* MAIN CONTENT */
 .main-content {
-    background: linear-gradient(135deg, #381341, #3f1414);
+    background: linear-gradient(135deg, #464103, #202020);
     min-height: calc(100vh - 130px);
     display: flex;
     justify-content: center;
