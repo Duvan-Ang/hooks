@@ -28,7 +28,6 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validaciones
         for (const key in formData) {
             if (formData[key] === '') {
                 Swal.fire("Campos incompletos", "Por favor llena todos los campos.", "warning");

@@ -73,8 +73,10 @@ function AuxiliaresPage() {
                 telefono: selectedAux.telefono,
                 email: selectedAux.email,
                 fechaNacimiento: selectedAux.fechaNacimiento,
+                edad: selectedAux.edad,
                 sexo: selectedAux.sexo,
-                estado: selectedAux.estado
+                estado: selectedAux.estado,
+                rol: selectedAux.rol
             });
 
             setAuxiliares(auxiliares.map(a =>
@@ -184,6 +186,7 @@ function AuxiliaresPage() {
                                     <th>Edad</th>
                                     <th>Sexo</th>
                                     <th>Estado</th>
+                                    <th>Rol</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -199,6 +202,18 @@ function AuxiliaresPage() {
                                         <td>{aux.edad || '-'}</td>
                                         <td>{aux.sexo || '-'}</td>
                                         <td>{aux.estado || 'Pendiente'}</td>
+                                        <td>
+                                        <span
+                                            className={
+                                            aux.rol === "Admin"
+                                                ? "badge bg-dark"     
+                                                : "badge bg-primary"  
+                                            }
+                                        >
+                                            {aux.rol || 'Auxiliar'}
+                                            
+                                        </span>
+                                        </td>
                                         <td>
                                             <Button
                                                 variant="warning"
@@ -325,7 +340,20 @@ function AuxiliaresPage() {
                                     <option>Inactivo</option>
                                 </Form.Select>
                             </Form.Group>
+                            <Form.Group className="mb-2">
+                                <Form.Label>Rol</Form.Label>
+                                <Form.Select
+                                    name="rol"
+                                    value={selectedAux.rol || ""}
+                                    onChange={handleModalChange}
+                                >
+                                    <option value="">-- Seleccione un rol --</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Auxiliar">Auxiliar</option>
+                                </Form.Select>
+                            </Form.Group>
                         </Form>
+                        
                     )}
                 </Modal.Body>
                 <Modal.Footer>
