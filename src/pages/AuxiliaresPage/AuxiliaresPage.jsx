@@ -64,25 +64,65 @@ function AuxiliaresPage() {
     
 
     const handleSaveChanges = async () => {
+        const { nombres, apellidos, cedula, telefono, email, fechaNacimiento, sexo } = selectedAux;
+        const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
+        const soloNumeros = /^\d{1,10}$/;
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        if (!nombres || !soloLetras.test(nombres)) {
+            Swal.fire('Error', 'El nombre debe contener solo letras y no estar vacío.', 'warning');
+            return;
+        }
+    
+        if (!apellidos || !soloLetras.test(apellidos)) {
+            Swal.fire('Error', 'El apellido debe contener solo letras y no estar vacío.', 'warning');
+            return;
+        }
+    
+        if (!cedula || !soloNumeros.test(cedula)) {
+            Swal.fire('Error', 'La cédula debe contener solo números (máx 10 dígitos).', 'warning');
+            return;
+        }
+    
+        if (!telefono || !soloNumeros.test(telefono)) {
+            Swal.fire('Error', 'El teléfono debe contener solo números (máx 10 dígitos).', 'warning');
+            return;
+        }
+    
+        if (!email || !emailValido.test(email)) {
+            Swal.fire('Error', 'El email no tiene un formato válido.', 'warning');
+            return;
+        }
+    
+        if (!fechaNacimiento) {
+            Swal.fire('Error', 'La fecha de nacimiento es obligatoria.', 'warning');
+            return;
+        }
+    
+        if (!sexo) {
+            Swal.fire('Error', 'El sexo es obligatorio.', 'warning');
+            return;
+        }
+    
         try {
             const auxRef = doc(db, 'usuarios', selectedAux.id);
             await updateDoc(auxRef, {
-                nombres: selectedAux.nombres,
-                apellidos: selectedAux.apellidos,
-                cedula: selectedAux.cedula,
-                telefono: selectedAux.telefono,
-                email: selectedAux.email,
-                fechaNacimiento: selectedAux.fechaNacimiento,
-                edad: selectedAux.edad,
-                sexo: selectedAux.sexo,
+                nombres,
+                apellidos,
+                cedula,
+                telefono,
+                email,
+                fechaNacimiento,
+                edad: calcularEdad(fechaNacimiento),
+                sexo,
                 estado: selectedAux.estado,
                 rol: selectedAux.rol
             });
-
+    
             setAuxiliares(auxiliares.map(a =>
                 a.id === selectedAux.id ? selectedAux : a
             ));
-
+    
             setShowModal(false);
             Swal.fire('Actualizado', 'Los datos fueron actualizados.', 'success');
         } catch (error) {
@@ -90,6 +130,7 @@ function AuxiliaresPage() {
             Swal.fire('Error', 'No se pudo actualizar.', 'error');
         }
     };
+    
 
     const handleModalChange = (e) => {
         const { name, value } = e.target;
@@ -171,7 +212,7 @@ function AuxiliaresPage() {
             <main className="main-content">
                 <Container className="mt-4">
                     <h2 className="page-title text-center mb-4">
-                        AUXILIARES DE SERVICIOS REGISTRADOS
+                        AUXILIARES DE SERVICIOS DE LA JOYERIA REGISTRADOS
                     </h2>
                     <div className="table-container">
                         <Table striped bordered hover responsive className="tabla-auxiliares">

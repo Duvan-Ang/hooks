@@ -104,9 +104,9 @@ function DashboardPage() {
       <main className="main-content">
         <div>
           <img src={logo} alt="Brilla Logo" className="main-logo" />
-          <h1 className="welcome-title">Welcome to Duvan System</h1>
+          <h1 className="welcome-title">Bienvenido a Duanzu-Venta de Joyeria</h1>
           <p className="welcome-text">
-            Manage your clients, services, and more efficiently!
+            Encuentra productos de calidad y precio justo!
           </p>
 
           <p className="welcome-text">
