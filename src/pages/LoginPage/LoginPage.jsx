@@ -2,9 +2,10 @@ import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { auth, googleProvider, db } from '../../firebase';
 import { signInWithEmailAndPassword, fetchSignInMethodsForEmail, linkWithCredential, EmailAuthProvider, signInWithPopup } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
 import './LoginPage.css';
 import logo from '../../assets/brilla.png';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+
 
 function Home() {
     const [email, setEmail] = useState('');
@@ -52,42 +53,63 @@ function Home() {
     };
 
     // LOGIN CON GOOGLE
-    const handleGoogleLogin = async () => {
-        try {
-            const googleResult = await signInWithPopup(auth, googleProvider);
-            const user = googleResult.user;
+    // LOGIN CON GOOGLE
+const handleGoogleLogin = async () => {
+  try {
+      const googleResult = await signInWithPopup(auth, googleProvider);
+      const user = googleResult.user;
 
-            // Verificar si ya existía ese correo con otro método
-            const signInMethods = await fetchSignInMethodsForEmail(auth, user.email);
+      // Verificar si ya existía ese correo con otro método
+      const signInMethods = await fetchSignInMethodsForEmail(auth, user.email);
 
-            if (signInMethods.includes('password')) {
-                // Si existe por password hay que vincularlo
-                const password = await solicitarPassword();
-                if (!password) {
-                    Swal.fire("Cancelado", "Operación cancelada.", "info");
-                    return;
-                }
+      if (signInMethods.includes('password')) {
+          // Si existe por password hay que vincularlo
+          const password = await solicitarPassword();
+          if (!password) {
+              Swal.fire("Cancelado", "Operación cancelada.", "info");
+              return;
+          }
 
-                // Crear credential de email/password
-                const credential = EmailAuthProvider.credential(user.email, password);
-                await linkWithCredential(user, credential);
-            }
+          const credential = EmailAuthProvider.credential(user.email, password);
+          await linkWithCredential(user, credential);
+      }
 
-            Swal.fire({
-                title: "¡Bienvenido!",
-                text: `Sesión iniciada con Google: ${user.email}`,
-                icon: "success",
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.href = "/dashboard";
-            });
+      // ✅ CREAR DOCUMENTO EN 'usuarios' SI NO EXISTE
+      const userDocRef = doc(db, 'usuarios', user.uid);
+      const userSnap = await getDoc(userDocRef);
 
-        } catch (error) {
-            console.error(error);
-            Swal.fire("Error", "No se pudo iniciar sesión con Google.", "error");
-        }
-    };
+      if (!userSnap.exists()) {
+          // Crear nuevo usuario auxiliar con datos básicos
+          await setDoc(userDocRef, {
+              nombres: user.displayName?.split(' ')[0] || '',
+              apellidos: user.displayName?.split(' ').slice(1).join(' ') || '',
+              email: user.email,
+              telefono: '',
+              cedula: '',
+              fechaNacimiento: '',
+              edad: '',
+              sexo: '',
+              estado: 'Activo',
+              rol: 'Auxiliar', // 👈 Puedes cambiar esto según tus reglas de negocio
+          });
+      }
+
+      Swal.fire({
+          title: "¡Bienvenido!",
+          text: `Sesión iniciada con Google: ${user.email}`,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false
+      }).then(() => {
+          window.location.href = "/dashboard";
+      });
+
+  } catch (error) {
+      console.error(error);
+      Swal.fire("Error", "No se pudo iniciar sesión con Google.", "error");
+  }
+};
+
 
     const solicitarPassword = async () => {
         const result = await Swal.fire({

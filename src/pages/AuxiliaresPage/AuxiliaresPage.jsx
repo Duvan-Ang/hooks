@@ -23,6 +23,13 @@ function AuxiliaresPage() {
                 ...doc.data()
             }));
             setAuxiliares(data);
+
+            // Obtener rol del usuario logueado
+            const currentUser = auth.currentUser;
+            const userDoc = querySnapshot.docs.find(doc => doc.data().email === currentUser?.email);
+            if (userDoc) {
+                setUserRole(userDoc.data().rol || 'Auxiliar');
+            }
         };
         fetchAuxiliares();
     }, []);
@@ -61,49 +68,54 @@ function AuxiliaresPage() {
         });
         setShowModal(true);
     };
-    
+
 
     const handleSaveChanges = async () => {
         const { nombres, apellidos, cedula, telefono, email, fechaNacimiento, sexo } = selectedAux;
         const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/;
         const soloNumeros = /^\d{1,10}$/;
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
+        if (userRole !== 'Admin') {
+            Swal.fire('Acceso denegado', 'No tienes permiso para editar.', 'error');
+            return;
+        }
+
         if (!nombres || !soloLetras.test(nombres)) {
             Swal.fire('Error', 'El nombre debe contener solo letras y no estar vacío.', 'warning');
             return;
         }
-    
+
         if (!apellidos || !soloLetras.test(apellidos)) {
             Swal.fire('Error', 'El apellido debe contener solo letras y no estar vacío.', 'warning');
             return;
         }
-    
+
         if (!cedula || !soloNumeros.test(cedula)) {
             Swal.fire('Error', 'La cédula debe contener solo números (máx 10 dígitos).', 'warning');
             return;
         }
-    
+
         if (!telefono || !soloNumeros.test(telefono)) {
             Swal.fire('Error', 'El teléfono debe contener solo números (máx 10 dígitos).', 'warning');
             return;
         }
-    
+
         if (!email || !emailValido.test(email)) {
             Swal.fire('Error', 'El email no tiene un formato válido.', 'warning');
             return;
         }
-    
+
         if (!fechaNacimiento) {
             Swal.fire('Error', 'La fecha de nacimiento es obligatoria.', 'warning');
             return;
         }
-    
+
         if (!sexo) {
             Swal.fire('Error', 'El sexo es obligatorio.', 'warning');
             return;
         }
-    
+
         try {
             const auxRef = doc(db, 'usuarios', selectedAux.id);
             await updateDoc(auxRef, {
@@ -118,11 +130,11 @@ function AuxiliaresPage() {
                 estado: selectedAux.estado,
                 rol: selectedAux.rol
             });
-    
+
             setAuxiliares(auxiliares.map(a =>
                 a.id === selectedAux.id ? selectedAux : a
             ));
-    
+
             setShowModal(false);
             Swal.fire('Actualizado', 'Los datos fueron actualizados.', 'success');
         } catch (error) {
@@ -130,39 +142,41 @@ function AuxiliaresPage() {
             Swal.fire('Error', 'No se pudo actualizar.', 'error');
         }
     };
-    
+
 
     const handleModalChange = (e) => {
         const { name, value } = e.target;
-    
+
         setSelectedAux((prev) => {
             const updated = { ...prev, [name]: value };
-    
+
             if (name === 'fechaNacimiento') {
                 updated.edad = calcularEdad(value);
             }
-    
+
             return updated;
         });
     };
-    
+
 
     const calcularEdad = (fechaNacimiento) => {
         if (!fechaNacimiento) return '';
-    
+
         const hoy = new Date();
         const fechaNac = new Date(fechaNacimiento);
-    
+
         let edad = hoy.getFullYear() - fechaNac.getFullYear();
         const mes = hoy.getMonth() - fechaNac.getMonth();
         const dia = hoy.getDate() - fechaNac.getDate();
-    
+
         if (mes < 0 || (mes === 0 && dia < 0)) {
             edad--;
         }
-    
+
         return edad;
     };
+
+    const [userRole, setUserRole] = useState(null);
 
     // Foto de usuario (si está logueado)
     const user = auth.currentUser;
@@ -220,15 +234,15 @@ function AuxiliaresPage() {
                                 <tr>
                                     <th>Nombres</th>
                                     <th>Apellidos</th>
-                                    <th>Cédula</th>
+                                    {userRole === 'Admin' && <th>Cédula</th>}
                                     <th>Teléfono</th>
-                                    <th>Email</th>
+                                    {userRole === 'Admin' && <th>Email</th>}
                                     <th>Fecha Nacimiento</th>
                                     <th>Edad</th>
                                     <th>Sexo</th>
                                     <th>Estado</th>
                                     <th>Rol</th>
-                                    <th>Acciones</th>
+                                    {userRole === 'Admin' && <th>Acciones</th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -236,42 +250,41 @@ function AuxiliaresPage() {
                                     <tr key={aux.id}>
                                         <td>{aux.nombres}</td>
                                         <td>{aux.apellidos}</td>
-                                        <td>{aux.cedula}</td>
+                                        {userRole === 'Admin' && <td>{aux.cedula}</td>}
                                         <td>{aux.telefono}</td>
-                                        <td>{aux.email}</td>
+                                        {userRole === 'Admin' && <td>{aux.email}</td>}
                                         <td>{aux.fechaNacimiento || '-'}</td>
                                         <td>{aux.edad || '-'}</td>
                                         <td>{aux.sexo || '-'}</td>
                                         <td>{aux.estado || 'Pendiente'}</td>
                                         <td>
-                                        <span
-                                            className={
-                                            aux.rol === "Admin"
-                                                ? "badge bg-dark"     
-                                                : "badge bg-primary"  
-                                            }
-                                        >
-                                            {aux.rol || 'Auxiliar'}
-                                            
-                                        </span>
-                                        </td>
-                                        <td>
-                                            <Button
-                                                variant="warning"
-                                                size="sm"
-                                                className="me-2"
-                                                onClick={() => handleEdit(aux)}
+                                            <span
+                                                className={
+                                                    aux.rol === "Admin" ? "badge bg-dark" : "badge bg-primary"
+                                                }
                                             >
-                                                <FaEdit />
-                                            </Button>
-                                            <Button
-                                                variant="danger"
-                                                size="sm"
-                                                onClick={() => handleEliminar(aux.id)}
-                                            >
-                                                <FaTrash />
-                                            </Button>
+                                                {aux.rol || 'Auxiliar'}
+                                            </span>
                                         </td>
+                                        {userRole === 'Admin' && (
+                                            <td>
+                                                <Button
+                                                    variant="warning"
+                                                    size="sm"
+                                                    className="me-2"
+                                                    onClick={() => handleEdit(aux)}
+                                                >
+                                                    <FaEdit />
+                                                </Button>
+                                                <Button
+                                                    variant="danger"
+                                                    size="sm"
+                                                    onClick={() => handleEliminar(aux.id)}
+                                                >
+                                                    <FaTrash />
+                                                </Button>
+                                            </td>
+                                        )}
                                     </tr>
                                 ))}
                             </tbody>
@@ -301,6 +314,7 @@ function AuxiliaresPage() {
                                     name="nombres"
                                     value={selectedAux.nombres}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-2">
@@ -310,6 +324,7 @@ function AuxiliaresPage() {
                                     name="apellidos"
                                     value={selectedAux.apellidos}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-2">
@@ -319,6 +334,7 @@ function AuxiliaresPage() {
                                     name="cedula"
                                     value={selectedAux.cedula}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-2">
@@ -328,6 +344,7 @@ function AuxiliaresPage() {
                                     name="telefono"
                                     value={selectedAux.telefono}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 />
                             </Form.Group>
                             <Form.Group className="mb-2">
@@ -342,10 +359,11 @@ function AuxiliaresPage() {
                             <Form.Group className="mb-2">
                                 <Form.Label>Fecha de Nacimiento</Form.Label>
                                 <Form.Control
-                                    type="date"
+                                    type="text"
                                     name="fechaNacimiento"
-                                    value={selectedAux.fechaNacimiento || ''}
+                                    value={selectedAux.fechaNacimiento}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 />
                                 <Form.Group className="mb-2">
                                     <Form.Label>Edad</Form.Label>
@@ -363,6 +381,7 @@ function AuxiliaresPage() {
                                     name="sexo"
                                     value={selectedAux.sexo || ''}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 >
                                     <option value="">Seleccionar</option>
                                     <option value="Masculino">Masculino</option>
@@ -375,6 +394,7 @@ function AuxiliaresPage() {
                                     name="estado"
                                     value={selectedAux.estado || 'Pendiente'}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 >
                                     <option>Pendiente</option>
                                     <option>Activo</option>
@@ -387,6 +407,7 @@ function AuxiliaresPage() {
                                     name="rol"
                                     value={selectedAux.rol || ""}
                                     onChange={handleModalChange}
+                                    disabled={userRole !== 'Admin'}
                                 >
                                     <option value="">-- Seleccione un rol --</option>
                                     <option value="Admin">Admin</option>
@@ -394,7 +415,7 @@ function AuxiliaresPage() {
                                 </Form.Select>
                             </Form.Group>
                         </Form>
-                        
+
                     )}
                 </Modal.Body>
                 <Modal.Footer>
