@@ -90,7 +90,7 @@ const handleGoogleLogin = async () => {
               edad: '',
               sexo: '',
               estado: 'Activo',
-              rol: 'Auxiliar', // 👈 Puedes cambiar esto según tus reglas de negocio
+              rol: '', 
           });
       }
 

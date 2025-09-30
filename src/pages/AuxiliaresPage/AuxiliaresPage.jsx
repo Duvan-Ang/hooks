@@ -359,7 +359,7 @@ function AuxiliaresPage() {
                             <Form.Group className="mb-2">
                                 <Form.Label>Fecha de Nacimiento</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="date"
                                     name="fechaNacimiento"
                                     value={selectedAux.fechaNacimiento}
                                     onChange={handleModalChange}
